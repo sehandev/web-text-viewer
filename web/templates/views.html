@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+
+<html lang="kr">
+
+<head>
+    <meta charset="UTF-8">
+
+    <title>웹 TXT Viewer</title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, shrink-to-fit=no, user-scalable=0" />
+
+    <link href="/css/font.css" rel="stylesheet">
+    <link href="/css/common.css" rel="stylesheet">
+    <link href="/css/views.css" rel="stylesheet">
+    <link href="/css/overlay.css" rel="stylesheet">
+</head>
+
+<body>
+
+    <nav id="nav-overlay" class="hide-menu">
+        <div id="inner-menu">
+            <!-- 텍본 제목 -->
+            <h1 id="txt-title" class="font-sans"></h1>
+
+            <!-- 폰트 종류 변경 버튼 -->
+            <div id="name-menu">
+                <button id="gothic-button">나눔고딕</button>
+                <button id="sans-button">Sans</button>
+                <button id="serif-button">Serif</button>
+            </div>
+
+            <!-- 폰트 크기 변경 버튼 -->
+            <div id="size-menu">
+                <button id="font-small-button">small</button>
+                <button id="font-medium-button">medium</button>
+                <button id="font-large-button">large</button>
+                <button id="font-xlarge-button">xlarge</button>
+            </div>
+        </div>
+    </nav>
+
+    <div id="txt-content" class="inline-center" style="height: 100%;">
+
+        <!-- txt 내용 -->
+        <textarea id="txt-content-area" class="{{index . "fontName"}} {{index . "fontSize"}}" readonly>txt 로딩 중..</textarea>
+
+        <!-- 드래그 못하도록 막기 -->
+        <button id="menu-button" class="not-draggable"></button>
+
+        <!-- 이전 버튼, 다음 버튼 -->
+        <button id="previous-button" class="page-button transparent-button"></button>
+        <button id="next-button" class="page-button transparent-button"></button>
+    </div>
+
+    <div id="txt-id" value="{{index . "txtID"}} "></div>
+    <div id="next-id" value=""></div>
+
+    <div id="compute-width" class="{{index . "fontName" }} {{index . "fontSize" }}" style="width:fit-content; line-height: 40px;"></div>
+
+    <footer>
+        <span id="page-index">0</span>
+        <span>/</span>
+        <span id="max-index">0</span>
+    </footer>
+
+    <!-- jquery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            // iPhones get fresh data
+            $.ajaxSetup({
+                cache: false
+            });
+        });
+    </script>
+
+    <!-- javascript -->
+    <script src="/js/views.js"></script>
+    <script src="/js/txt_ajax.js"></script>
+    <script src="/js/font_change.js"></script>
+
+    <script>
+        document.body.style.height = window.innerHeight ? window.innerHeight + "px" : $(window).height();
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,162 @@
+.hide-menu {
+    display: none !important;
+}
+
+#txt-name {
+    margin: 0 0 3px 0px;
+    text-align: center;
+}
+
+#txt-content {
+    position: relative;
+}
+
+#txt-content-area {
+    z-index: 1;
+    height: 88%;
+    resize: none;
+    outline: none;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    box-shadow: 0px 0px 3px #999;
+    padding: 15px 10px 15px 15px;
+    background-color: white;
+    /* 배경을 흰색으로 */
+    color: black;
+    /* 글자를 검은색으로 */
+}
+
+#txt-content-area::-webkit-scrollbar {
+    display: none;
+}
+
+.page-button {
+    position: absolute;
+    z-index: 3;
+    width: 30%;
+    height: 100%;
+    padding: 0;
+    border: 0;
+    margin: 0;
+    top: 0;
+    opacity: 0.0;
+    touch-action: manipulation;
+    /* iOS 등에서 더블클릭이 확대,축소로 이어지지 않도록 */
+}
+
+#previous-button {
+    left: 0;
+    /* background-color: red; */
+}
+
+#next-button {
+    right: 0;
+    /* background-color: blue; */
+}
+
+.transparent-button {
+    background-color: Transparent;
+    background-repeat: no-repeat;
+    border: none;
+    cursor: pointer;
+    overflow: hidden;
+    outline: none;
+}
+
+footer {
+    line-height: 25px;
+    height: 25px;
+    background-color: #80BD9E;
+    color: white;
+    text-align: center;
+}
+
+
+/* Extra small devices (portrait phones, 400~576px) */
+
+@media (max-width: 399.98px) {
+    #txt-content-area {
+        width: 90%;
+    }
+    #compute-width {
+        width: 90%;
+    }
+    #txt-name {
+        font-size: 12px;
+    }
+}
+
+
+/* Extra small devices (portrait phones, 400~576px) */
+
+@media (min-width: 400px) and (max-width: 575.98px) {
+    #txt-content-area {
+        width: 375px;
+    }
+    #compute-width {
+        width: 375px;
+    }
+    #txt-name {
+        font-size: 15px;
+    }
+}
+
+
+/* Small devices (landscape phones, 576~768px) */
+
+@media (min-width: 576px) and (max-width: 767.98px) {
+    #txt-content-area {
+        width: 551px;
+    }
+    #compute-width {
+        width: 551px;
+    }
+    #txt-name {
+        font-size: 20px;
+    }
+}
+
+
+/* Medium devices (tablets, 768~992px) */
+
+@media (min-width: 768px) and (max-width: 991.98px) {
+    #txt-content-area {
+        width: 743px;
+    }
+    #compute-width {
+        width: 743px;
+    }
+    #txt-name {
+        font-size: 25px;
+    }
+}
+
+
+/* Large devices (desktops, 992~1200px) */
+
+@media (min-width: 992px) and (max-width: 1199.98px) {
+    #txt-content-area {
+        width: 967px;
+    }
+    #compute-width {
+        width: 967px;
+    }
+    #txt-name {
+        font-size: 30px;
+    }
+}
+
+
+/* Extra large devices (large desktops, 1200px~) */
+
+@media (min-width: 1200px) {
+    #txt-content-area {
+        width: 1175px;
+    }
+    #compute-width {
+        width: 1175px;
+    }
+    #txt-name {
+        font-size: 40px;
+    }
+}
