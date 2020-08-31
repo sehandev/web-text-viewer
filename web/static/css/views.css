@@ -39,7 +39,7 @@
     border: 0;
     margin: 0;
     top: 0;
-    opacity: 0.0;
+    opacity: 0;
     touch-action: manipulation;
     /* iOS 등에서 더블클릭이 확대,축소로 이어지지 않도록 */
 }
@@ -66,11 +66,10 @@
 footer {
     line-height: 25px;
     height: 25px;
-    background-color: #80BD9E;
+    background-color: #80bd9e;
     color: white;
     text-align: center;
 }
-
 
 /* Extra small devices (portrait phones, 400~576px) */
 
@@ -86,7 +85,6 @@ footer {
     }
 }
 
-
 /* Extra small devices (portrait phones, 400~576px) */
 
 @media (min-width: 400px) and (max-width: 575.98px) {
@@ -100,7 +98,6 @@ footer {
         font-size: 15px;
     }
 }
-
 
 /* Small devices (landscape phones, 576~768px) */
 
@@ -116,7 +113,6 @@ footer {
     }
 }
 
-
 /* Medium devices (tablets, 768~992px) */
 
 @media (min-width: 768px) and (max-width: 991.98px) {
@@ -131,7 +127,6 @@ footer {
     }
 }
 
-
 /* Large devices (desktops, 992~1200px) */
 
 @media (min-width: 992px) and (max-width: 1199.98px) {
@@ -145,7 +140,6 @@ footer {
         font-size: 30px;
     }
 }
-
 
 /* Extra large devices (large desktops, 1200px~) */
 
