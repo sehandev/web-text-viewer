@@ -1,7 +1,7 @@
-$("#menu-button").click(function() {
-    $("#nav-overlay").toggleClass("hide-menu");
-});
+$("#menu-button").click(() => {
+    $("#nav-overlay").toggleClass("hide-menu")
+})
 
-$("#nav-overlay").click(function() {
-    $("#nav-overlay").toggleClass("hide-menu");
-});
+$("#nav-overlay").click(() => {
+    $("#nav-overlay").toggleClass("hide-menu")
+})
