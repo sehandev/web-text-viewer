@@ -15,44 +15,49 @@ function isString(tmp) {
     return false
 }
 
-// split_txt_content : content를 한 페이지에 보이게 (스크롤 안해도 되도록) 나눠서 content_arr에 저장
+// split_txt_content : content를 한 page에 보이게 (scroll 안해도 되도록) 나눠서 content_arr에 저장
 // txt_content (String) : TODO
 function split_txt_content(txt_content) {
-    let textarea_height = $("#txt-content-area").height()
+    let margin_height = 0
+    let textarea_height = parseInt($("#txt-content-area").height())
     let line_height = parseInt($("#txt-content-area").css("lineHeight"))
-    let line_limit = Math.floor(textarea_height / line_height)
+    let line_limit = Math.floor((textarea_height - margin_height * 2) / line_height)
 
     content_arr = [] // 초기화
     let content_line_arr = txt_content.split("\n")
-    for (let split_index = 0; split_index < 300; split_index += line_limit) {
-        let auto_new_line_count = 0
 
-        for (let i = split_index; i < split_index + line_limit; i++) {
-            const content_line = content_line_arr[i]
-            if (isString(content_line)) {
-                // 몇 줄인지 확인해서 추가
-                document.getElementById("compute-width").innerText = content_line
-                let line_count = document.getElementById("compute-width").offsetHeight / 40 - 1
-                auto_new_line_count += line_count
+    let full_line_count = 0 // 누적 줄 수
+    let content_part_arr = [] // 누적 문자열 배열
+    for (let index = 0; index < 300; index++) {
+        let line_count = 0 // 현재 줄 수
+        let content_line = content_line_arr[index] // 현재 문자열
+
+        if (isString(content_line)) {
+            // 몇 줄인지 확인
+            document.getElementById("compute-width").innerText = content_line
+            line_count = document.getElementById("compute-width").offsetHeight / 40
+            if (line_count < 1) {
+                line_count = 1
             }
         }
 
-        // 자동으로 넘어간 만큼 앞당겨서 자르기
-        let tmp_content_part = content_line_arr.slice(split_index, split_index + line_limit - auto_new_line_count).join("\n")
-        content_arr.push(tmp_content_part)
+        // 줄 수 제한을 넘어갈 예정이라면 다음 page로 넘기기
+        if (line_limit < full_line_count + line_count) {
+            // 누적 문자열 추가
+            content_arr.push(content_part_arr.join("\n"))
 
-        // 원래보다 앞당겨서 자른 만큼 다음 자르기도 앞당겨서 시작
-        split_index -= auto_new_line_count
+            // 변수 초기화
+            full_line_count = 0
+            content_part_arr = []
+        }
+
+        // 현재 줄 추가
+        content_part_arr.push(content_line)
+        full_line_count += line_count
     }
 
     max_page_index = content_arr.length - 1
     document.getElementById("compute-width").innerText = ""
-
-    // console.log("textarea width : ", textarea_width);
-    // console.log("textarea height : ", textarea_height);
-    // console.log("line height : ", line_height);
-    // console.log("line limit : ", line_limit);
-    // console.log("page length : ", max_page_index);
 }
 
 function recalculate_page() {
