@@ -12,6 +12,7 @@ type content struct {
 	ID      string `json:"id"`
 	Title   string `json:"title"`
 	Content string `json:"content"`
+	PrevID  string `json:"prevID"`
 	NextID  string `json:"nextID"`
 }
 
@@ -31,11 +32,12 @@ func getTxtContentByTxtID(txtID string) (tContent content) {
 	txtObjectID, err := primitive.ObjectIDFromHex(txtID)
 	errCheck(err)
 
-	txtTitle, txtContent, nextID := findContentByTxtID(txtObjectID)
+	txtTitle, txtContent, prevID, nextID := findContentByTxtID(txtObjectID)
 	tContent = content{
 		ID:      txtObjectID.Hex(),
 		Title:   txtTitle,
 		Content: txtContent,
+		PrevID:  prevID.Hex(),
 		NextID:  nextID.Hex(),
 	}
 	return
@@ -48,11 +50,12 @@ func getTxtContentByUserName(userName string) (tContent content) {
 	// 여기서 startID 중에서 고르는 프로세스가 추가로 들어가야함
 	selectedIndex := len(startIDArr) - 1
 	startID := startIDArr[selectedIndex]["txt_id"].(primitive.ObjectID)
-	txtTitle, txtContent, nextID := findContentByTxtID(startID)
+	txtTitle, txtContent, prevID, nextID := findContentByTxtID(startID)
 	tContent = content{
 		ID:      startID.Hex(),
 		Title:   txtTitle,
 		Content: txtContent,
+		PrevID:  prevID.Hex(),
 		NextID:  nextID.Hex(),
 	}
 	return
@@ -61,7 +64,10 @@ func getTxtContentByUserName(userName string) (tContent content) {
 func findUserIDByUserName(userName string) primitive.ObjectID {
 	// Mongodb find
 	var result bson.M // _id, user_name
-	err := collection["user"].FindOne(ctx, bson.M{"user_name": userName}).Decode(&result)
+	err := collection["user"].FindOne(ctx,
+		bson.M{
+			"user_name": userName,
+		}).Decode(&result)
 	errCheck(err)
 
 	return result["_id"].(primitive.ObjectID)
@@ -70,7 +76,10 @@ func findUserIDByUserName(userName string) primitive.ObjectID {
 func findStartIDByUserID(userID primitive.ObjectID) []bson.M {
 	// Mongodb find
 
-	cur, err := collection["start_id"].Find(ctx, bson.M{"user_id": userID})
+	cur, err := collection["start_id"].Find(ctx,
+		bson.M{
+			"user_id": userID,
+		})
 	errCheck(err)
 	defer cur.Close(ctx)
 
@@ -91,14 +100,18 @@ func findStartIDByUserID(userID primitive.ObjectID) []bson.M {
 	return resultArr
 }
 
-func findContentByTxtID(txtObjectID primitive.ObjectID) (txtTitle, txtContent string, nextID primitive.ObjectID) {
+func findContentByTxtID(txtObjectID primitive.ObjectID) (txtTitle, txtContent string, prevID primitive.ObjectID, nextID primitive.ObjectID) {
 	// Mongodb find
-	var result bson.M // _id, title, content, nextID
-	err := collection["txt_content"].FindOne(ctx, bson.M{"_id": txtObjectID}).Decode(&result)
+	var result bson.M // _id, title, content, prevID, nextID
+	err := collection["txt_content"].FindOne(ctx,
+		bson.M{
+			"_id": txtObjectID,
+		}).Decode(&result)
 	errCheck(err)
 
 	txtTitle = result["title"].(string)
 	txtContent = result["content"].(string)
+	prevID = result["prevID"].(primitive.ObjectID)
 	nextID = result["nextID"].(primitive.ObjectID)
 	return
 }
@@ -135,7 +148,10 @@ func getStartIDByUserID(userID string) (startIDArr []startIDStruct) {
 	// Mongodb find
 	var startIDResult startIDStruct // _id, txt_id, txt_title, user_id
 
-	cur, err := collection["start_id"].Find(ctx, bson.M{"user_id": userObjectID})
+	cur, err := collection["start_id"].Find(ctx,
+		bson.M{
+			"user_id": userObjectID,
+		})
 	errCheck(err)
 
 	for cur.Next(context.TODO()) {

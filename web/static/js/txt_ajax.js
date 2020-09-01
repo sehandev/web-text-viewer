@@ -76,6 +76,7 @@ $(document).ready(() => {
         cache: true,
         success: (data) => {
             $("#txt-title").html(data.title)
+            $("#prev-id").attr("value", data.prevID)
             $("#next-id").attr("value", data.nextID)
 
             // content를 한 페이지에 보이게 (스크롤 안해도 되도록) 나누기
@@ -104,11 +105,27 @@ $(document).ready(() => {
 function previous_page() {
     if (page_index > 0) {
         page_index -= 1
+        $("#txt-content-area").html(content_arr[page_index])
+        $("#page-index").html(page_index)
     } else {
-        page_index = 0
+        // 첫 페이지면 이전 부분으로 넘어가기
+        move_prev_part()
     }
-    $("#txt-content-area").html(content_arr[page_index])
-    $("#page-index").html(page_index)
+}
+
+function move_prev_part() {
+    // 첫 부분인 경우 메세지
+    let prev_id = $("#prev-id").attr("value")
+    if (prev_id == "000000000000000000000000") {
+        alert("처음입니다.")
+    }
+    // 첫 부분이 아닌 경우 이전 부분으로 이동
+    else {
+        let font_info_arr = get_font_info()
+        let font_name = font_info_arr[0]
+        let font_size = font_info_arr[1]
+        window.location.href = "/views/" + prev_id + "?font-name=" + font_name + "&font-size=" + font_size
+    }
 }
 
 // 다음 페이지
