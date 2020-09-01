@@ -11,8 +11,8 @@ func insertNewTxt() {
 	// Mongodb insert one
 
 	userName := "tester"
-	txtName := "Test Data"
-	txtPath := "/data/Test Data.txt"
+	txtName := "Test"
+	txtPath := "/data/test_copy.txt"
 
 	data := readTxt(txtPath)     // txt 파일 읽기
 	splitedArr := splitTxt(data) // 300줄씩 부분으로 나누기
@@ -33,6 +33,8 @@ func insertNewTxt() {
 		errCheck(err)
 		nextTxtID = insertResult.InsertedID.(primitive.ObjectID)
 	}
+
+	insertStartID(userName, txtName, nextTxtID) // username에 따라 startID 추가
 
 	prevTxtID = primitive.ObjectID{0} // 초기화
 	// 마지막 부분 ObjectID(0000...) 또는 max index 조건
@@ -55,8 +57,6 @@ func insertNewTxt() {
 		prevTxtID = nextTxtID
 		nextTxtID = findResult["nextID"].(primitive.ObjectID)
 	}
-
-	insertStartID(userName, txtName, nextTxtID) // username에 따라 startID 추가
 }
 
 func insertStartID(userName, txtName string, startID primitive.ObjectID) {
