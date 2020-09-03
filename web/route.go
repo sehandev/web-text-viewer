@@ -6,6 +6,12 @@ import (
 	"github.com/labstack/echo"
 )
 
+// e.GET("/", getIndex)
+func getIndex(c echo.Context) error {
+	templateMap := map[string]interface{}{}
+	return c.Render(http.StatusOK, "index.html", templateMap)
+}
+
 // e.GET("/users", getUser)
 func getUser(c echo.Context) error {
 	templateMap := map[string]interface{}{

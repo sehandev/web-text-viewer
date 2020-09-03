@@ -23,7 +23,7 @@ func main() {
 	e.Static("/", "static")
 
 	// Routes
-	e.GET("/", getUser)
+	e.GET("/", getIndex)
 	e.GET("/users", getUser)
 	e.GET("/starts/:userID", getStart)
 	e.GET("/views/:txtID", getView)
