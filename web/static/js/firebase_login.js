@@ -1,24 +1,33 @@
 const firebase_signup = () => {
-    let email = document.getElementById("email-input").value
-    let password = document.getElementById("password-input").value
+    let email = document.getElementById("email-input").getAttribute("value")
+    let password = document.getElementById("password-input").getAttribute("value")
     console.log("email :", email)
     console.log("password :", password)
     firebase
         .auth()
         .createUserWithEmailAndPassword(email, password)
         .catch((error) => {
-            var errorCode = error.code
-            var errorMessage = error.message
-
-            console.log(errorCode)
-            console.log(errorMessage)
-            alert(errorMessage)
+            // error.code, error.message
+            switch (error.code) {
+                case "auth/email-already-in-use":
+                    alert("이미 사용중인 이메일 입니다.")
+                    break
+                case "auth/invalid-email":
+                    alert("유효하지 않은 메일입니다")
+                    break
+                case "auth/operation-not-allowed":
+                    alert("이메일 가입이 중지되었습니다.")
+                    break
+                case "auth/weak-password":
+                    alert("비밀번호를 6자리 이상 필요합니다")
+                    break
+            }
         })
 }
 
 const firebase_signin = () => {
-    let email = document.getElementById("email-input").value
-    let password = document.getElementById("password-input").value
+    let email = document.getElementById("email-input").getAttribute("value")
+    let password = document.getElementById("password-input").getAttribute("value")
     console.log("email :", email)
     console.log("password :", password)
     firebase
@@ -52,6 +61,17 @@ document.getElementById("sign-up-btn").onclick = firebase_signup
 document.getElementById("sign-in-btn").onclick = firebase_signin
 document.getElementById("sign-out-btn").onclick = firebase_signout
 
+const toggle_display_none = () => {
+    document.getElementById("email-input").classList.toggle("d-none")
+    document.getElementById("password-input").classList.toggle("d-none")
+    document.getElementById("welcome-message").classList.toggle("d-none")
+    document.getElementById("display-name").classList.toggle("d-none")
+    document.getElementById("sign-up-btn").classList.toggle("d-none")
+    document.getElementById("sign-in-btn").classList.toggle("d-none")
+    document.getElementById("enter-btn").classList.toggle("d-none")
+    document.getElementById("sign-out-btn").classList.toggle("d-none")
+}
+
 firebase.auth().onAuthStateChanged((user) => {
     if (user) {
         // User is signed in.
@@ -66,15 +86,27 @@ firebase.auth().onAuthStateChanged((user) => {
         console.log("emailVerified :", emailVerified)
         console.log("uid :", uid)
         console.log("providerData :", providerData[0])
+        console.log("token :", User.getToken())
 
-        document.getElementById("sign-up-btn").classList.add("d-none")
-        document.getElementById("sign-in-btn").classList.add("d-none")
-        document.getElementById("sign-out-btn").classList.remove("d-none")
+        if (!displayName) {
+            user.updateProfile({
+                displayName: "New User",
+            })
+                .then(() => {
+                    // Update successful.
+                    // document.getElementById("display-name").innerHTML = displayName
+                    console.log("good")
+                })
+                .catch((error) => {
+                    alert(error)
+                })
+        }
+        document.getElementById("display-name").innerHTML = displayName
+
+        toggle_display_none()
     } else {
         // User is signed out.
-        document.getElementById("sign-up-btn").classList.remove("d-none")
-        document.getElementById("sign-in-btn").classList.remove("d-none")
-        document.getElementById("sign-out-btn").classList.add("d-none")
+        toggle_display_none()
         console.log("sign out")
     }
 })
