@@ -9,8 +9,13 @@ func deleteTmp() {
 	// Mongodb insert one
 	// txtID, err := primitive.ObjectIDFromHex("5ef629786d4bd38fc106c601")
 	// errCheck(err)
-	_, err := collection["txt_content"].DeleteMany(ctx, bson.M{})
+	_, err := collection["txt_content"].DeleteMany(ctx,
+		bson.M{
+			"title": bson.M{
+				"$regex": ".",
+			},
+		})
 	errCheck(err)
-	_, err = collection["start_id"].DeleteMany(ctx, bson.M{})
-	errCheck(err)
+	// _, err = collection["start_id"].DeleteMany(ctx, bson.M{})
+	// errCheck(err)
 }
