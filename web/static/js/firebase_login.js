@@ -82,14 +82,13 @@ const toggle_display_none = () => {
     document.getElementById("sign-out-btn").classList.toggle("d-none")
 }
 
+let user_uid
+
 firebase.auth().onAuthStateChanged((user) => {
     if (user) {
         // User is signed in.
-        var displayName = user.displayName
-        var email = user.email
-        var emailVerified = user.emailVerified
-        var uid = user.uid
-        var providerData = user.providerData
+        let displayName = user.displayName
+        user_uid = user.uid
 
         if (!displayName) {
             user.updateProfile({
@@ -97,7 +96,8 @@ firebase.auth().onAuthStateChanged((user) => {
             })
                 .then(() => {
                     // Update successful.
-                    document.getElementById("display-name").innerHTML = displayName
+                    console.log("SUCCESS : Set display name")
+                    document.getElementById("display-name").innerHTML = "New User"
                 })
                 .catch((error) => {
                     alert(error)
