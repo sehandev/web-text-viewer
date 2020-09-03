@@ -25,27 +25,38 @@
         <link href="/css/common.css" rel="stylesheet" />
     </head>
 
-    <body style="background-color: antiquewhite">
+    <body>
         <div class="container max-width-576">
             <div class="bg-clipboard flex-box">
                 <div class="center-login align-items-center">
-                    <div class="mb-4"></div>
+                    <!-- padding -->
+                    <div class="my-4"></div>
+
+                    <!-- title box -->
                     <div class="title-box">
-                        <span>Dog</span>
+                        <span class="title">Dog</span>
                         <img class="logo-img" src="/img/dogear_logo.png" />
-                        <span>Ear</span>
+                        <span class="title">Ear</span>
                     </div>
-                    <div class="mb-3">
-                        <label for="email-input" class="form-label">User Name</label>
-                        <input type="text" class="form-control" id="email-input" />
+
+                    <!-- login box -->
+                    <div id="login-box" class="my-4">
+                        <!-- logout state -->
+                        <input type="text" id="email-input" class="form-control my-3" placeholder="email" />
+                        <input type="password" id="password-input" class="form-control my-3" placeholder="password" />
+
+                        <!-- login state -->
+                        <div id="welcome-message" class="my-3 d-none">Welcome</div>
+                        <div id="display-name" class="my-3 d-none"></div>
                     </div>
-                    <div class="mb-3">
-                        <label for="password-input" class="form-label">Password</label>
-                        <input type="password" class="form-control" id="password-input" />
-                    </div>
-                    <button id="sign-up-btn" class="btn btn-info">Sign Up</button>
-                    <button id="sign-in-btn" class="btn btn-primary">Sign In</button>
-                    <button id="sign-out-btn" class="btn btn-primary d-none">Sign Out</button>
+
+                    <!-- logout state -->
+                    <button id="sign-up-btn" class="btn btn-info btn-35">Sign Up</button>
+                    <button id="sign-in-btn" class="btn btn-primary btn-35">Sign In</button>
+
+                    <!-- login state -->
+                    <button id="enter-btn" class="btn btn-info btn-35 d-none">Enter</button>
+                    <button id="sign-out-btn" class="btn btn-primary btn-35 d-none">Sign Out</button>
                 </div>
             </div>
         </div>
@@ -54,6 +65,7 @@
         <script defer src="https://www.gstatic.com/firebasejs/7.19.1/firebase-auth.js"></script>
         <script defer src="https://www.gstatic.com/firebasejs/7.19.1/firebase-analytics.js"></script>
 
+        <script defer src="/js/index.js"></script>
         <script defer src="/js/init_firebase.js"></script>
         <script defer src="/js/firebase_login.js"></script>
     </body>
