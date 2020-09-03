@@ -1,5 +1,16 @@
 @import url("https://fonts.googleapis.com/css2?family=Nanum+Gothic&family=Noto+Sans+KR&family=Noto+Serif+KR&display=swap");
 
+@font-face {
+    font-family: "NEXON Lv1 Gothic OTF Bold";
+    src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_20-04@2.1/NEXON Lv1 Gothic OTF Bold.woff") format("woff");
+    font-weight: normal;
+    font-style: normal;
+}
+
+body {
+    font-family: "NEXON Lv1 Gothic OTF Bold";
+}
+
 .font-gothic {
     font-family: "Nanum Gothic", sans-serif;
 }
