@@ -20,58 +20,83 @@ function get_font_info() {
     return [font_name, font_size]
 }
 
-$("#gothic-button").click(() => {
-    $("#txt-content-area").addClass("font-gothic")
-    $("#txt-content-area").removeClass("font-sans font-serif")
-    $("#compute-width").addClass("font-gothic")
-    $("#compute-width").removeClass("font-sans font-serif")
+let txt_content_area_class_list = document.getElementById("txt-content-area").classList
+let compute_width_class_list = document.getElementById("compute-width").classList
+
+document.getElementById("gothic-button").addEventListener("click", () => {
+    txt_content_area_class_list.add("font-gothic")
+    txt_content_area_class_list.remove("font-sans")
+    txt_content_area_class_list.remove("font-serif")
+    compute_width_class_list.add("font-gothic")
+    compute_width_class_list.remove("font-sans")
+    compute_width_class_list.remove("font-serif")
     recalculate_page()
 })
 
-$("#sans-button").click(() => {
-    $("#txt-content-area").addClass("font-sans")
-    $("#txt-content-area").removeClass("font-gothic font-serif")
-    $("#compute-width").addClass("font-sans")
-    $("#compute-width").removeClass("font-gothic font-serif")
+document.getElementById("sans-button").addEventListener("click", () => {
+    txt_content_area_class_list.add("font-sans")
+    txt_content_area_class_list.remove("font-gothic")
+    txt_content_area_class_list.remove("font-serif")
+    compute_width_class_list.add("font-sans")
+    compute_width_class_list.remove("font-gothic")
+    compute_width_class_list.remove("font-serif")
     recalculate_page()
 })
 
-$("#serif-button").click(() => {
-    $("#txt-content-area").addClass("font-serif")
-    $("#txt-content-area").removeClass("font-sans font-gothic")
-    $("#compute-width").addClass("font-serif")
-    $("#compute-width").removeClass("font-sans font-gothic")
+document.getElementById("serif-button").addEventListener("click", () => {
+    txt_content_area_class_list.add("font-serif")
+    txt_content_area_class_list.remove("font-sans")
+    txt_content_area_class_list.remove("font-gothic")
+    compute_width_class_list.add("font-serif")
+    compute_width_class_list.remove("font-sans")
+    compute_width_class_list.remove("font-gothic")
     recalculate_page()
 })
 
-$("#font-small-button").click(() => {
-    $("#txt-content-area").addClass("font-small")
-    $("#txt-content-area").removeClass("font-medium font-large font-xlarge")
-    $("#compute-width").addClass("font-small")
-    $("#compute-width").removeClass("font-medium font-large font-xlarge")
+document.getElementById("font-small-button").addEventListener("click", () => {
+    txt_content_area_class_list.add("font-small")
+    txt_content_area_class_list.remove("font-medium")
+    txt_content_area_class_list.remove("font-large")
+    txt_content_area_class_list.remove("font-xlarge")
+    compute_width_class_list.add("font-small")
+    compute_width_class_list.remove("font-medium")
+    compute_width_class_list.remove("font-large")
+    compute_width_class_list.remove("font-xlarge")
     recalculate_page()
 })
 
-$("#font-medium-button").click(() => {
-    $("#txt-content-area").addClass("font-medium")
-    $("#txt-content-area").removeClass("font-small font-large font-xlarge")
-    $("#compute-width").addClass("font-medium")
-    $("#compute-width").removeClass("font-small font-large font-xlarge")
+document.getElementById("font-medium-button").addEventListener("click", () => {
+    txt_content_area_class_list.add("font-medium")
+    txt_content_area_class_list.remove("font-small")
+    txt_content_area_class_list.remove("font-large")
+    txt_content_area_class_list.remove("font-xlarge")
+    compute_width_class_list.add("font-medium")
+    compute_width_class_list.remove("font-small")
+    compute_width_class_list.remove("font-large")
+    compute_width_class_list.remove("font-xlarge")
     recalculate_page()
 })
 
-$("#font-large-button").click(() => {
-    $("#txt-content-area").addClass("font-large")
-    $("#txt-content-area").removeClass("font-small font-medium font-xlarge")
-    $("#compute-width").addClass("font-large")
-    $("#compute-width").removeClass("font-small font-medium font-xlarge")
+document.getElementById("font-large-button").addEventListener("click", () => {
+    txt_content_area_class_list.add("font-large")
+    txt_content_area_class_list.remove("font-small")
+    txt_content_area_class_list.remove("font-medium")
+    txt_content_area_class_list.remove("font-xlarge")
+    compute_width_class_list.add("font-large")
+    compute_width_class_list.remove("font-small")
+    compute_width_class_list.remove("font-medium")
+    compute_width_class_list.remove("font-xlarge")
     recalculate_page()
 })
 
-$("#font-xlarge-button").click(() => {
-    $("#txt-content-area").addClass("font-xlarge")
-    $("#txt-content-area").removeClass("font-small font-medium font-large")
-    $("#compute-width").addClass("font-xlarge")
-    $("#compute-width").removeClass("font-small font-medium font-large")
+document.getElementById("font-xlarge-button").addEventListener("click", () => {
+    txt_content_area_class_list.add("font-xlarge")
+    txt_content_area_class_list.remove("font-small")
+    txt_content_area_class_list.remove("font-medium")
+    txt_content_area_class_list.remove("font-large")
+    compute_width_class_list.add("font-xlarge")
+    compute_width_class_list.remove("font-small")
+    compute_width_class_list.remove("font-medium")
+    compute_width_class_list.remove("font-large")
     recalculate_page()
 })
