@@ -1,3 +1,7 @@
+body {
+    background-color: antiquewhite;
+}
+
 .inline-center {
     text-align: center;
 }
@@ -37,4 +41,10 @@ footer {
 
 .max-width-576 {
     max-width: 576px;
+    min-width: 380px;
+}
+
+.flex-box {
+    display: -webkit-flex !important;
+    display: flex !important;
 }
