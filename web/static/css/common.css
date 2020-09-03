@@ -48,3 +48,7 @@ footer {
     display: -webkit-flex !important;
     display: flex !important;
 }
+
+.btn-35 {
+    width: 35%;
+}
