@@ -7,14 +7,17 @@
 }
 
 .center-login {
-    min-width: 190px;
+    min-width: 200px;
     width: 55%;
     margin: auto;
     text-align: center;
 }
 
+#login-box {
+    height: 100px;
+}
+
 .title {
-    text-align: center;
     font-size: xx-large;
 }
 
