@@ -1,6 +1,6 @@
 const firebase_signup = () => {
-    let email = document.getElementById("email-input").getAttribute("value")
-    let password = document.getElementById("password-input").getAttribute("value")
+    let email = document.getElementById("email-input").value
+    let password = document.getElementById("password-input").value
     console.log("email :", email)
     console.log("password :", password)
     firebase
@@ -26,8 +26,8 @@ const firebase_signup = () => {
 }
 
 const firebase_signin = () => {
-    let email = document.getElementById("email-input").getAttribute("value")
-    let password = document.getElementById("password-input").getAttribute("value")
+    let email = document.getElementById("email-input").value
+    let password = document.getElementById("password-input").value
     console.log("email :", email)
     console.log("password :", password)
     firebase
@@ -59,6 +59,7 @@ const firebase_signout = () => {
         .then(function () {
             // Sign-out successful.
             console.log("sign out successful")
+            toggle_display_none()
         })
         .catch(function (error) {
             // An error happened.
@@ -90,20 +91,13 @@ firebase.auth().onAuthStateChanged((user) => {
         var uid = user.uid
         var providerData = user.providerData
 
-        console.log("display name :", displayName)
-        console.log("email :", email)
-        console.log("emailVerified :", emailVerified)
-        console.log("uid :", uid)
-        console.log("providerData :", providerData[0])
-
         if (!displayName) {
             user.updateProfile({
                 displayName: "New User",
             })
                 .then(() => {
                     // Update successful.
-                    // document.getElementById("display-name").innerHTML = displayName
-                    console.log("good")
+                    document.getElementById("display-name").innerHTML = displayName
                 })
                 .catch((error) => {
                     alert(error)
@@ -114,7 +108,6 @@ firebase.auth().onAuthStateChanged((user) => {
         toggle_display_none()
     } else {
         // User is signed out.
-        toggle_display_none()
         console.log("sign out")
     }
 })
