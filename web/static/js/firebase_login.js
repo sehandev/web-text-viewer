@@ -95,7 +95,6 @@ firebase.auth().onAuthStateChanged((user) => {
         console.log("emailVerified :", emailVerified)
         console.log("uid :", uid)
         console.log("providerData :", providerData[0])
-        console.log("token :", User.getToken())
 
         if (!displayName) {
             user.updateProfile({
