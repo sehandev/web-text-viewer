@@ -19,8 +19,11 @@ function isString(tmp) {
 // txt_content (String) : TODO
 function split_txt_content(txt_content) {
     let margin_height = 0
-    let textarea_height = parseInt($("#txt-content-area").height())
-    let line_height = parseInt($("#txt-content-area").css("lineHeight"))
+
+    let txt_content_area = document.getElementById("txt-content-area")
+    let txt_content_area_computed_style = window.getComputedStyle(txt_content_area)
+    let textarea_height = parseInt(txt_content_area_computed_style.getPropertyValue("height"))
+    let line_height = parseInt(txt_content_area_computed_style.getPropertyValue("line-height"))
     let line_limit = Math.floor((textarea_height - margin_height * 2) / line_height)
 
     content_arr = [] // 초기화
@@ -68,52 +71,57 @@ function split_txt_content(txt_content) {
 
 function recalculate_page() {
     split_txt_content(content_string)
-    $("#txt-content-area").html(content_arr[page_index])
-    $("#page-index").html(page_index)
-    $("#max-index").html(max_page_index)
+    document.getElementById("txt-content-area").innerHTML = content_arr[page_index]
+    document.getElementById("page-index").innerHTML = page_index.toString()
+    document.getElementById("max-index").innerHTML = max_page_index.toString()
 }
 
-// 페이지 열면 바로 ajax로 id에 해당하는 txt 불러오기
-$(document).ready(() => {
-    $.ajax({
-        url: "http://api.sehandev.com/contents/" + $("#txt-id").attr("value"),
-        type: "GET",
-        dataType: "json",
-        cache: true,
-        success: (data) => {
-            $("#txt-title").html(data.title)
-            $("#prev-id").attr("value", data.prevID)
-            $("#next-id").attr("value", data.nextID)
-
-            // content를 한 페이지에 보이게 (스크롤 안해도 되도록) 나누기
-            content_string = data.content
-            console.log(content_string)
-            recalculate_page()
-
-            $("#previous-button").click(previous_page)
-            $("#next-button").click(next_page)
-            document.onkeydown = function (e) {
-                switch (e.keyCode) {
-                    case 37: // 키보드 왼쪽 화살표
-                        previous_page()
-                        break
-                    case 39: // 키보드 오른쪽 화살표
-                        next_page()
-                        break
-                    case 27: // 키보드 Esc
-                        $("#nav-overlay").toggleClass("hide-menu")
-                }
-            }
-        },
-    })
+// load 완료하면 ajax로 id에 해당하는 txt 불러오기
+document.addEventListener("DOMContentLoaded", () => {
+    let txt_id = document.getElementById("txt-id").getAttribute("value")
+    var xhr = new XMLHttpRequest()
+    var url = "http://api.sehandev.com/contents/" + txt_id
+    xhr.open("GET", url, true)
+    xhr.onreadystatechange = () => {
+        if (xhr.readyState === 4 && xhr.status === 200) {
+            var ajax_data = JSON.parse(xhr.responseText)
+            set_ajax_data(ajax_data)
+        }
+    }
+    xhr.send()
 })
+
+function set_ajax_data(ajax_data) {
+    document.getElementById("txt-title").innerHTML = ajax_data.title
+    document.getElementById("prev-id").setAttribute("value", ajax_data.prevID)
+    document.getElementById("next-id").setAttribute("value", ajax_data.nextID)
+
+    // content를 한 페이지에 보이게 (스크롤 안해도 되도록) 나누기
+    content_string = ajax_data.content
+    recalculate_page()
+
+    document.getElementById("previous-button").addEventListener("click", () => previous_page())
+    document.getElementById("next-button").addEventListener("click", () => next_page())
+    document.onkeydown = (e) => {
+        switch (e.keyCode) {
+            case 37: // 키보드 왼쪽 화살표
+                previous_page()
+                break
+            case 39: // 키보드 오른쪽 화살표
+                next_page()
+                break
+            case 27: // 키보드 Esc
+                document.getElementById("nav-overlay").classList.toggle("hide-menu")
+        }
+    }
+}
 
 // 이전 페이지
 function previous_page() {
     if (page_index > 0) {
         page_index -= 1
-        $("#txt-content-area").html(content_arr[page_index])
-        $("#page-index").html(page_index)
+        document.getElementById("txt-content-area").innerHTML = content_arr[page_index]
+        document.getElementById("page-index").innerHTML = page_index.toString()
     } else {
         // 첫 페이지면 이전 부분으로 넘어가기
         move_prev_part()
@@ -122,7 +130,7 @@ function previous_page() {
 
 function move_prev_part() {
     // 첫 부분인 경우 메세지
-    let prev_id = $("#prev-id").attr("value")
+    let prev_id = document.getElementById("prev-id").getAttribute("value")
     if (prev_id == "000000000000000000000000") {
         alert("처음입니다.")
     }
@@ -139,8 +147,8 @@ function move_prev_part() {
 function next_page() {
     if (page_index < max_page_index) {
         page_index += 1
-        $("#txt-content-area").html(content_arr[page_index])
-        $("#page-index").html(page_index)
+        document.getElementById("txt-content-area").innerHTML = content_arr[page_index]
+        document.getElementById("page-index").innerHTML = page_index.toString()
     } else {
         // 마지막 페이지면 다음 부분으로 넘어가기
         move_next_part()
@@ -149,7 +157,7 @@ function next_page() {
 
 function move_next_part() {
     // 마지막 부분인 경우 메세지
-    let next_id = $("#next-id").attr("value")
+    let next_id = document.getElementById("next-id").getAttribute("value")
     if (next_id == "000000000000000000000000") {
         alert("마지막입니다.")
     }
