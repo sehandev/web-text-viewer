@@ -59,6 +59,9 @@ function split_txt_content(txt_content) {
         full_line_count += line_count
     }
 
+    // 마지막 page 추가
+    content_arr.push(content_part_arr.join("\n"))
+
     max_page_index = content_arr.length - 1
     document.getElementById("compute-width").innerText = ""
 }
