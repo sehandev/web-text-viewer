@@ -4,18 +4,22 @@
     <head>
         <meta charset="UTF-8" />
 
-        <title>웹 TXT Viewer</title>
+        <title>Dog Ear TXT</title>
 
         <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, shrink-to-fit=no, user-scalable=0" />
 
+        <!-- bootstrap -->
         <link
             rel="stylesheet"
             href="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/css/bootstrap.min.css"
             integrity="sha384-r4NyP46KrjDleawBgD5tp8Y7UzmLA05oM1iAEQ17CSuDqnUK2+k9luXQOfXJCJ4I"
             crossorigin="anonymous"
         />
+
+        <!-- font 나눔스퀘어 -->
         <link rel="stylesheet" type="text/css" href="https://cdn.rawgit.com/moonspam/NanumSquare/master/nanumsquare.css" />
 
+        <!-- custom css -->
         <link href="/css/index.css" rel="stylesheet" />
         <link href="/css/font.css" rel="stylesheet" />
         <link href="/css/common.css" rel="stylesheet" />
@@ -23,21 +27,34 @@
 
     <body style="background-color: antiquewhite">
         <div class="container max-width-576">
-            <form class="bg-clipboard d-flex" action="/users" method="get">
+            <div class="bg-clipboard flex-box">
                 <div class="center-login align-items-center">
-                    <div class="title mb-3">Dog Ear TXT</div>
+                    <div class="mb-4"></div>
+                    <div class="title-box">
+                        <span>Dog</span>
+                        <img class="logo-img" src="/img/dogear_logo.png" />
+                        <span>Ear</span>
+                    </div>
                     <div class="mb-3">
-                        <label for="user-name-input" class="form-label">User Name</label>
-                        <input type="text" class="form-control" id="user-name-input" />
+                        <label for="email-input" class="form-label">User Name</label>
+                        <input type="text" class="form-control" id="email-input" />
                     </div>
                     <div class="mb-3">
                         <label for="password-input" class="form-label">Password</label>
                         <input type="password" class="form-control" id="password-input" />
                     </div>
-                    <button type="submit" class="btn btn-info">Sign Up</button>
-                    <button type="submit" class="btn btn-primary">Sign In</button>
+                    <button id="sign-up-btn" class="btn btn-info">Sign Up</button>
+                    <button id="sign-in-btn" class="btn btn-primary">Sign In</button>
+                    <button id="sign-out-btn" class="btn btn-primary d-none">Sign Out</button>
                 </div>
-            </form>
+            </div>
         </div>
+
+        <script defer src="https://www.gstatic.com/firebasejs/7.19.1/firebase-app.js"></script>
+        <script defer src="https://www.gstatic.com/firebasejs/7.19.1/firebase-auth.js"></script>
+        <script defer src="https://www.gstatic.com/firebasejs/7.19.1/firebase-analytics.js"></script>
+
+        <script defer src="/js/init_firebase.js"></script>
+        <script defer src="/js/firebase_login.js"></script>
     </body>
 </html>
