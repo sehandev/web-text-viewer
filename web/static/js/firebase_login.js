@@ -34,12 +34,21 @@ const firebase_signin = () => {
         .auth()
         .signInWithEmailAndPassword(email, password)
         .catch((error) => {
-            var errorCode = error.code
-            var errorMessage = error.message
-
-            console.log(errorCode)
-            console.log(errorMessage)
-            alert(errorMessage)
+            // error.code, error.message
+            switch (error.code) {
+                case "auth/invalid-email":
+                    alert("유효하지 않은 메일입니다")
+                    break
+                case "auth/user-disabled":
+                    alert("사용이 정지된 유저 입니다.")
+                    break
+                case "auth/user-not-found":
+                    alert("사용자를 찾을 수 없습니다.")
+                    break
+                case "auth/wrong-password":
+                    alert("잘못된 패스워드 입니다.")
+                    break
+            }
         })
 }
 
