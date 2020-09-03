@@ -24,3 +24,7 @@
 .logo-img {
     width: 30%;
 }
+
+#display-name {
+    color: gray;
+}
