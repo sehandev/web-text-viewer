@@ -32,13 +32,16 @@ function split_txt_content(txt_content) {
         let line_count = 0 // 현재 줄 수
         let content_line = content_line_arr[index] // 현재 문자열
 
-        if (isString(content_line)) {
-            // 몇 줄인지 확인
-            document.getElementById("compute-width").innerText = content_line
-            line_count = document.getElementById("compute-width").offsetHeight / 40
-            if (line_count < 1) {
-                line_count = 1
-            }
+        // string 확인
+        if (!isString(content_line)) {
+            continue
+        }
+
+        // 몇 줄인지 확인
+        document.getElementById("compute-width").innerText = content_line
+        line_count = document.getElementById("compute-width").offsetHeight / 40
+        if (line_count < 1) {
+            line_count = 1
         }
 
         // 줄 수 제한을 넘어갈 예정이라면 다음 page로 넘기기
@@ -81,6 +84,7 @@ $(document).ready(() => {
 
             // content를 한 페이지에 보이게 (스크롤 안해도 되도록) 나누기
             content_string = data.content
+            console.log(content_string)
             recalculate_page()
 
             $("#previous-button").click(previous_page)
