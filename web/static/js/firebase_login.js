@@ -1,8 +1,6 @@
 const firebase_signup = () => {
     let email = document.getElementById("email-input").value
     let password = document.getElementById("password-input").value
-    console.log("email :", email)
-    console.log("password :", password)
     firebase
         .auth()
         .createUserWithEmailAndPassword(email, password)
@@ -23,13 +21,12 @@ const firebase_signup = () => {
                     break
             }
         })
+    console.log("SUCCESS : sign up")
 }
 
 const firebase_signin = () => {
     let email = document.getElementById("email-input").value
     let password = document.getElementById("password-input").value
-    console.log("email :", email)
-    console.log("password :", password)
     firebase
         .auth()
         .signInWithEmailAndPassword(email, password)
@@ -50,6 +47,7 @@ const firebase_signin = () => {
                     break
             }
         })
+    console.log("SUCCESS : sign in")
 }
 
 const firebase_signout = () => {
@@ -58,12 +56,12 @@ const firebase_signout = () => {
         .signOut()
         .then(function () {
             // Sign-out successful.
-            console.log("sign out successful")
+            console.log("SUCCESS : sign out")
             toggle_display_none()
         })
         .catch(function (error) {
             // An error happened.
-            console.log("sign out error")
+            console.log(error)
         })
 }
 
