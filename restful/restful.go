@@ -40,7 +40,7 @@ func main() {
 
 	// Routes
 	e.GET("/users", getUserJSON)
-	e.GET("/starts/:userID", getStartJSON)
+	e.GET("/starts/:firebaseUUID", getStartJSON)
 	e.GET("/contents/:txtID", getContentJSON)
 
 	// Test
@@ -53,14 +53,14 @@ func main() {
 }
 
 func getUserJSON(c echo.Context) error {
-	userArr := getUserList()
+	userArr := getAllUserList()
 
 	return c.JSON(http.StatusOK, userArr)
 }
 
 func getStartJSON(c echo.Context) error {
-	userID := c.Param("userID")
-	startIDArr := getStartIDByUserID(userID)
+	firebaseUUID := c.Param("firebaseUUID")
+	startIDArr := getAllStartIDByFirebaseUUID(firebaseUUID)
 
 	return c.JSON(http.StatusOK, startIDArr)
 }

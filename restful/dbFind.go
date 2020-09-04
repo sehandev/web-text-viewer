@@ -29,37 +29,18 @@ type startIDStruct struct {
 	UserID   string `json:"user_id" bson:"user_id"`
 }
 
-func getTxtContentByTxtID(txtID string) (tContent content) {
-	txtObjectID, err := primitive.ObjectIDFromHex(txtID)
+/* ******************** Start : Find ******************** */
+
+// findUserIDByFirebaseUUID : MongoDB find user_id by firebase_uuid
+func findUserIDByFirebaseUUID(firebaseUUID string) primitive.ObjectID {
+	var result bson.M // _id, user_name, firebase_uuid
+	err := collection["user"].FindOne(ctx,
+		bson.M{
+			"firebase_uuid": firebaseUUID,
+		}).Decode(&result)
 	errCheck(err)
 
-	txtTitle, txtContent, prevID, nextID := findContentByTxtID(txtObjectID)
-	tContent = content{
-		ID:      txtObjectID.Hex(),
-		Title:   txtTitle,
-		Content: txtContent,
-		PrevID:  prevID.Hex(),
-		NextID:  nextID.Hex(),
-	}
-	return
-}
-
-func getTxtContentByUserName(userName string) (tContent content) {
-	userID := findUserIDByUserName(userName)
-
-	startIDArr := findStartIDByUserID(userID)
-	// 여기서 startID 중에서 고르는 프로세스가 추가로 들어가야함
-	selectedIndex := len(startIDArr) - 1
-	startID := startIDArr[selectedIndex]["txt_id"].(primitive.ObjectID)
-	txtTitle, txtContent, prevID, nextID := findContentByTxtID(startID)
-	tContent = content{
-		ID:      startID.Hex(),
-		Title:   txtTitle,
-		Content: txtContent,
-		PrevID:  prevID.Hex(),
-		NextID:  nextID.Hex(),
-	}
-	return
+	return result["_id"].(primitive.ObjectID)
 }
 
 // findUserIDByUserName : MongoDB find user_id by user_name (deprecated)
@@ -75,21 +56,8 @@ func findUserIDByUserName(userName string) primitive.ObjectID {
 	return result["_id"].(primitive.ObjectID)
 }
 
-// findUserIDByFirebaseUUID : MongoDB find user_id by firebase_uuid
-func findUserIDByFirebaseUUID(firebaseUUID string) primitive.ObjectID {
-	var result bson.M // _id, user_name, firebase_uuid
-	err := collection["user"].FindOne(ctx,
-		bson.M{
-			"firebase_uuid": firebaseUUID,
-		}).Decode(&result)
-	errCheck(err)
-
-	return result["_id"].(primitive.ObjectID)
-}
-
-func findStartIDByUserID(userID primitive.ObjectID) []bson.M {
-	// Mongodb find
-
+// findAllStartIDByUserID : MongoDB find all start_ids by user_id
+func findAllStartIDByUserID(userID primitive.ObjectID) []bson.M {
 	cur, err := collection["start_id"].Find(ctx,
 		bson.M{
 			"user_id": userID,
@@ -114,8 +82,8 @@ func findStartIDByUserID(userID primitive.ObjectID) []bson.M {
 	return resultArr
 }
 
+// findContentByTxtID : MongoDB find txt_content by txt_id
 func findContentByTxtID(txtObjectID primitive.ObjectID) (txtTitle, txtContent string, prevID primitive.ObjectID, nextID primitive.ObjectID) {
-	// Mongodb find
 	var result bson.M // _id, title, content, prevID, nextID
 	err := collection["txt_content"].FindOne(ctx,
 		bson.M{
@@ -130,34 +98,32 @@ func findContentByTxtID(txtObjectID primitive.ObjectID) (txtTitle, txtContent st
 	return
 }
 
-// getUserList : 모든 user 정보를 MongoDB에서 불러오기
-func getUserList() (userArr []userStruct) {
-	// Mongodb find
-	var userResult userStruct // _id, user_name, firebase_uuid
+/* ******************** End : Find ******************** */
 
-	cur, err := collection["user"].Find(ctx, bson.M{})
-	errCheck(err)
+/* ******************** Start : Get ******************** */
 
-	for cur.Next(context.TODO()) {
-		err := cur.Decode(&userResult)
-		errCheck(err)
+// getTxtContentByFirebaseUUID : get txt_content by firebase_uuid
+func getTxtContentByFirebaseUUID(firebaseUUID string) (tContent content) {
+	userID := findUserIDByFirebaseUUID(firebaseUUID)
 
-		// 추가
-		userArr = append(userArr, userResult)
+	startIDArr := findAllStartIDByUserID(userID)
+	// TODO : startID 중에서 가장 최근 기록을 고르는 프로세스가 추가로 들어가야함
+	selectedIndex := len(startIDArr) - 1
+	startID := startIDArr[selectedIndex]["txt_id"].(primitive.ObjectID)
+	txtTitle, txtContent, prevID, nextID := findContentByTxtID(startID)
+	tContent = content{
+		ID:      startID.Hex(),
+		Title:   txtTitle,
+		Content: txtContent,
+		PrevID:  prevID.Hex(),
+		NextID:  nextID.Hex(),
 	}
-
-	err = cur.Err()
-	errCheck(err)
-
-	cur.Close(context.TODO())
-
 	return
 }
 
-// getStartIDByUserID : userID를 받아서 해당하는 모든 start 정보를 MongoDB에서 불러오기
-func getStartIDByUserID(userID string) (startIDArr []startIDStruct) {
-	userObjectID, err := primitive.ObjectIDFromHex(userID)
-	errCheck(err)
+// getAllStartIDByFirebaseUUID : get all start_ids by firebase_uuid
+func getAllStartIDByFirebaseUUID(firebaseUUID string) (startIDArr []startIDStruct) {
+	userObjectID := findUserIDByFirebaseUUID(firebaseUUID)
 
 	// Mongodb find
 	var startIDResult startIDStruct // _id, txt_id, txt_title, user_id
@@ -183,3 +149,44 @@ func getStartIDByUserID(userID string) (startIDArr []startIDStruct) {
 
 	return
 }
+
+// getTxtContentByTxtID : get txt_content by txt_id
+func getTxtContentByTxtID(txtID string) (tContent content) {
+	txtObjectID, err := primitive.ObjectIDFromHex(txtID)
+	errCheck(err)
+
+	txtTitle, txtContent, prevID, nextID := findContentByTxtID(txtObjectID)
+	tContent = content{
+		ID:      txtObjectID.Hex(),
+		Title:   txtTitle,
+		Content: txtContent,
+		PrevID:  prevID.Hex(),
+		NextID:  nextID.Hex(),
+	}
+	return
+}
+
+// getAllUserList : get all users (private)
+func getAllUserList() (userArr []userStruct) {
+	var userResult userStruct // _id, user_name, firebase_uuid
+
+	cur, err := collection["user"].Find(ctx, bson.M{})
+	errCheck(err)
+
+	for cur.Next(context.TODO()) {
+		err := cur.Decode(&userResult)
+		errCheck(err)
+
+		// 추가
+		userArr = append(userArr, userResult)
+	}
+
+	err = cur.Err()
+	errCheck(err)
+
+	cur.Close(context.TODO())
+
+	return
+}
+
+/* ******************** End : Get ******************** */
