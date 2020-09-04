@@ -17,8 +17,9 @@ type content struct {
 }
 
 type userStruct struct {
-	ID       string `json:"id" bson:"_id"`
-	UserName string `json:"user_name" bson:"user_name"`
+	ID           string `json:"id" bson:"_id"`
+	UserName     string `json:"user_name" bson:"user_name"`
+	FirebaseUUID string `json:"firebase_uuid" bson:"firebase_uuid"`
 }
 
 type startIDStruct struct {
@@ -61,12 +62,25 @@ func getTxtContentByUserName(userName string) (tContent content) {
 	return
 }
 
+// findUserIDByUserName : MongoDB find user_id by user_name (deprecated)
 func findUserIDByUserName(userName string) primitive.ObjectID {
 	// Mongodb find
-	var result bson.M // _id, user_name
+	var result bson.M // _id, user_name, firebase_uuid
 	err := collection["user"].FindOne(ctx,
 		bson.M{
 			"user_name": userName,
+		}).Decode(&result)
+	errCheck(err)
+
+	return result["_id"].(primitive.ObjectID)
+}
+
+// findUserIDByFirebaseUUID : MongoDB find user_id by firebase_uuid
+func findUserIDByFirebaseUUID(firebaseUUID string) primitive.ObjectID {
+	var result bson.M // _id, user_name, firebase_uuid
+	err := collection["user"].FindOne(ctx,
+		bson.M{
+			"firebase_uuid": firebaseUUID,
 		}).Decode(&result)
 	errCheck(err)
 
@@ -116,10 +130,10 @@ func findContentByTxtID(txtObjectID primitive.ObjectID) (txtTitle, txtContent st
 	return
 }
 
-// getStartIDByUserID : 모든 user 정보를 MongoDB에서 불러오기
+// getUserList : 모든 user 정보를 MongoDB에서 불러오기
 func getUserList() (userArr []userStruct) {
 	// Mongodb find
-	var userResult userStruct // _id, user_name
+	var userResult userStruct // _id, user_name, firebase_uuid
 
 	cur, err := collection["user"].Find(ctx, bson.M{})
 	errCheck(err)
