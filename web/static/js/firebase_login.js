@@ -128,6 +128,7 @@ firebase.auth().onAuthStateChanged((user) => {
 
             document.getElementById("display-name").innerHTML = "new_user"
             is_signup = false
+            user_uid = user.uid
         } else {
             // sign in
 
