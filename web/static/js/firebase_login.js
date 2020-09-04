@@ -1,3 +1,7 @@
+let display_name // 접속 user의 firebase display_name
+let user_uid // 접속 user의 firebase uid
+let is_signup = false // 회원가입 진행 유무
+
 const firebase_signup = () => {
     let email = document.getElementById("email-input").value
     let password = document.getElementById("password-input").value
@@ -21,6 +25,7 @@ const firebase_signup = () => {
                     break
             }
         })
+    is_signup = true
     console.log("SUCCESS : sign up")
 }
 
@@ -80,32 +85,57 @@ const toggle_display_none = () => {
     document.getElementById("sign-out-btn").classList.toggle("d-none")
 }
 
-let user_uid
-
-const set_display_name = (user, display_name) => {
+const update_display_name = (user, new_display_name) => {
     user.updateProfile({
-        displayName: display_name,
+        displayName: new_display_name,
     })
         .then(() => {
             // Update successful.
-            console.log("SUCCESS : Set display name")
+            console.log("SUCCESS : update display name")
         })
         .catch((error) => {
             console.error(error)
         })
 }
 
+const post_new_user = (user_name, user_email, firebase_uuid) => {
+    let xhr = new XMLHttpRequest()
+    let url = "http://api.sehandev.com/users"
+    let user_form_data = new FormData()
+    user_form_data.append("user_name", user_name)
+    user_form_data.append("user_email", user_email)
+    user_form_data.append("firebase_uuid", firebase_uuid)
+
+    xhr.open("POST", url, true)
+    xhr.send(user_form_data)
+
+    xhr.onload = () => {
+        if (xhr.status === 200 || xhr.status === 201) {
+            console.log("SUCCESS post new user :", xhr.responseText)
+        } else {
+            console.error("FAIL post new user :", xhr.responseText)
+        }
+    }
+}
+
 firebase.auth().onAuthStateChanged((user) => {
     if (user) {
-        // User is signed in.
-        let displayName = user.displayName
-        user_uid = user.uid
+        if (is_signup) {
+            // sign up
 
-        if (!displayName) {
-            set_display_name(user, "New User")
-            document.getElementById("display-name").innerHTML = "New User"
+            update_display_name(user, "new_user")
+            post_new_user("new_user", user.email, user.uid)
+
+            document.getElementById("display-name").innerHTML = "new_user"
+            is_signup = false
+        } else {
+            // sign in
+
+            let displayName = user.displayName
+            user_uid = user.uid
+
+            document.getElementById("display-name").innerHTML = displayName
         }
-        document.getElementById("display-name").innerHTML = displayName
 
         toggle_display_none()
     } else {

@@ -39,6 +39,7 @@ func main() {
 	collection["txt_content"] = db.Collection("txt_content")
 
 	// Routes
+	e.POST("/users", postUserJSON)
 	e.GET("/users", getUserJSON)
 	e.GET("/starts/:firebaseUUID", getStartJSON)
 	e.GET("/contents/:txtID", getContentJSON)
@@ -50,6 +51,15 @@ func main() {
 
 	// Start server
 	e.Logger.Fatal(e.Start("localhost:9000"))
+}
+
+func postUserJSON(c echo.Context) error {
+	userName := c.FormValue("user_name")
+	userEmail := c.FormValue("user_email")
+	firebaseUUID := c.FormValue("firebase_uuid")
+	insertUser(userName, userEmail, firebaseUUID)
+
+	return c.String(http.StatusOK, userEmail)
 }
 
 func getUserJSON(c echo.Context) error {

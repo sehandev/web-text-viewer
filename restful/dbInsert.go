@@ -8,10 +8,12 @@ import (
 )
 
 // insertUser : insert new user
-func insertUser(userName string) {
+func insertUser(userName, userEmail, firebaseUUID string) {
 	_, err := collection["user"].InsertOne(ctx,
 		bson.M{
-			"user_name": userName,
+			"user_name":     userName,
+			"user_email":    userEmail,
+			"firebase_uuid": firebaseUUID,
 		})
 	errCheck(err)
 }
