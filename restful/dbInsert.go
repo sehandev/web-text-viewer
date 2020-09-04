@@ -7,9 +7,31 @@ import (
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
-func insertNewTxt() {
-	// Mongodb insert one
+// insertUser : insert new user
+func insertUser(userName string) {
+	_, err := collection["user"].InsertOne(ctx,
+		bson.M{
+			"user_name": userName,
+		})
+	errCheck(err)
+}
 
+// insertStartID : insert new start_id
+func insertStartID(userName, txtName string, startID primitive.ObjectID) {
+	userID := findUserIDByUserName(userName)
+	_, err := collection["start_id"].InsertOne(ctx,
+		bson.M{
+			"user_id":   userID,
+			"txt_title": txtName,
+			"txt_id":    startID,
+		})
+	errCheck(err)
+}
+
+// insertTxtContent : insert new txt_content
+func insertTxtContent() {
+
+	// TODO : 입력 받아서 넣기
 	userName := "tester"
 	txtName := "Test"
 	txtPath := "/data/test_copy.txt"
@@ -57,27 +79,4 @@ func insertNewTxt() {
 		prevTxtID = nextTxtID
 		nextTxtID = findResult["nextID"].(primitive.ObjectID)
 	}
-}
-
-func insertStartID(userName, txtName string, startID primitive.ObjectID) {
-	// Mongodb insert one
-
-	userID := findUserIDByUserName(userName)
-	_, err := collection["start_id"].InsertOne(ctx,
-		bson.M{
-			"user_id":   userID,
-			"txt_title": txtName,
-			"txt_id":    startID,
-		})
-	errCheck(err)
-}
-
-func insertUser(userName string) {
-	// Mongodb insert one
-
-	_, err := collection["user"].InsertOne(ctx,
-		bson.M{
-			"user_name": userName,
-		})
-	errCheck(err)
 }
