@@ -82,6 +82,19 @@ const toggle_display_none = () => {
 
 let user_uid
 
+const set_display_name = (user, display_name) => {
+    user.updateProfile({
+        displayName: display_name,
+    })
+        .then(() => {
+            // Update successful.
+            console.log("SUCCESS : Set display name")
+        })
+        .catch((error) => {
+            console.error(error)
+        })
+}
+
 firebase.auth().onAuthStateChanged((user) => {
     if (user) {
         // User is signed in.
@@ -89,17 +102,8 @@ firebase.auth().onAuthStateChanged((user) => {
         user_uid = user.uid
 
         if (!displayName) {
-            user.updateProfile({
-                displayName: "New User",
-            })
-                .then(() => {
-                    // Update successful.
-                    console.log("SUCCESS : Set display name")
-                    document.getElementById("display-name").innerHTML = "New User"
-                })
-                .catch((error) => {
-                    alert(error)
-                })
+            set_display_name(user, "New User")
+            document.getElementById("display-name").innerHTML = "New User"
         }
         document.getElementById("display-name").innerHTML = displayName
 
