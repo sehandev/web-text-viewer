@@ -24,6 +24,7 @@ const firebase_signup = () => {
                     alert("비밀번호를 6자리 이상 필요합니다")
                     break
             }
+            is_signup = false
         })
     is_signup = true
     console.log("SUCCESS : sign up")
@@ -77,7 +78,6 @@ document.getElementById("sign-out-btn").onclick = firebase_signout
 const toggle_display_none = () => {
     document.getElementById("email-input").classList.toggle("d-none")
     document.getElementById("password-input").classList.toggle("d-none")
-    document.getElementById("welcome-message").classList.toggle("d-none")
     document.getElementById("display-name").classList.toggle("d-none")
     document.getElementById("sign-up-btn").classList.toggle("d-none")
     document.getElementById("sign-in-btn").classList.toggle("d-none")
@@ -95,6 +95,19 @@ const update_display_name = (user, new_display_name) => {
         })
         .catch((error) => {
             console.error(error)
+        })
+}
+
+const send_verify_email = (user) => {
+    user.sendEmailVerification()
+        .then(function () {
+            // Email sent.
+            console.log("SUCCESS : verify email send")
+        })
+        .catch(function (error) {
+            // An error happened.
+            console.log("FAIL : verify email send")
+            console.log(error)
         })
 }
 
@@ -119,11 +132,14 @@ const post_new_user = (user_name, user_email, firebase_uuid) => {
 }
 
 firebase.auth().onAuthStateChanged((user) => {
+    document.getElementById("email-input").value = null
+    document.getElementById("password-input").value = null
     if (user) {
         if (is_signup) {
             // sign up
 
             update_display_name(user, "new_user")
+            send_verify_email(user)
             post_new_user("new_user", user.email, user.uid)
 
             document.getElementById("display-name").innerHTML = "new_user"
@@ -138,9 +154,23 @@ firebase.auth().onAuthStateChanged((user) => {
             document.getElementById("display-name").innerHTML = displayName
         }
 
+        if (user.emailVerified) {
+            // email 인증을 마친 user
+            document.getElementById("welcome-message").classList.remove("d-none")
+            document.getElementById("email-verify-message").classList.add("d-none")
+            document.getElementById("enter-btn").disabled = false
+        } else {
+            // email 인증을 마치지 않은 user
+            document.getElementById("welcome-message").classList.add("d-none")
+            document.getElementById("email-verify-message").classList.remove("d-none")
+            document.getElementById("enter-btn").disabled = true
+        }
+
         toggle_display_none()
     } else {
         // User is signed out.
         console.log("sign out")
+        document.getElementById("welcome-message").classList.add("d-none")
+        document.getElementById("email-verify-message").classList.add("d-none")
     }
 })
