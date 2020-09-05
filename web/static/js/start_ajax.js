@@ -8,16 +8,17 @@ document.addEventListener("DOMContentLoaded", () => {
         if (xhr.readyState === 4 && xhr.status === 200) {
             var ajax_data = JSON.parse(xhr.responseText)
             ajax_data.forEach((data) => {
-                let div = document.createElement("div")
-                div.innerHTML = `
-                    <a href="/views/${data["txt_id"]}" class="list-group-item list-group-item-action px-2 py-3" aria-current="true">
-                        <div class="d-flex w-100 justify-content-between">
-                            <span class="mx-2 text-break txt-title">${data["txt_title"]}</span>
-                            <span class="badge bg-warning date-badge">2020.04.10</span>
-                        </div>
-                    </a>
-                    `
-                document.getElementById("start-list").appendChild(div)
+                let a_tag = document.createElement("a")
+                a_tag.href = `/views/${data["txt_id"]}`
+                a_tag.classList.add("list-group-item", "list-group-item-action", "p-3")
+                a_tag.setAttribute("aria-current", "true")
+                a_tag.innerHTML = `
+                    <div class="d-flex w-100 justify-content-between">
+                        <span class="mx-2 text-break txt-title">${data["txt_title"]}</span>
+                        <span class="badge bg-warning date-badge">2020.04.10</span>
+                    </div>
+                `
+                document.getElementById("start-list").appendChild(a_tag)
             })
         }
     }
