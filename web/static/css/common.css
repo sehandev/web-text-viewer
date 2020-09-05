@@ -42,13 +42,10 @@ footer {
 .max-width-576 {
     max-width: 576px;
     min-width: 380px;
+    min-height: 480px;
 }
 
 .flex-box {
     display: -webkit-flex !important;
     display: flex !important;
-}
-
-.btn-35 {
-    width: 35%;
 }

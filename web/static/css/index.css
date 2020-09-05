@@ -1,5 +1,6 @@
 .bg-clipboard {
     height: 95vh;
+    min-height: 456px;
     background-image: url("/img/clipboard_background.png");
     background-repeat: no-repeat;
     background-position: center;
