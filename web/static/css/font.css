@@ -45,3 +45,7 @@ body {
     font-size: 28px;
     line-height: 36px;
 }
+
+input {
+    font-family: "Noto Sans KR", sans-serif;
+}
