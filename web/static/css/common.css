@@ -49,3 +49,17 @@ footer {
     display: -webkit-flex !important;
     display: flex !important;
 }
+
+.title-box {
+    width: 200px;
+    text-align: center;
+    margin: auto;
+}
+
+.title {
+    font-size: xx-large;
+}
+
+.logo-img {
+    width: 65px;
+}
