@@ -10,11 +10,11 @@ document.addEventListener("DOMContentLoaded", () => {
             ajax_data.forEach((data) => {
                 let div = document.createElement("div")
                 div.innerHTML = `
-                    <a href="/views/${data["txt_id"]}" class="list-group-item list-group-item-action p-4" aria-current="true">
-                    <div class="d-flex w-100 justify-content-between">
-                        <h5 class="mb-1">${data["txt_title"]}</h5>
-                        <span class="badge bg-warning text-dark">2020.04.10</span>
-                    </div>
+                    <a href="/views/${data["txt_id"]}" class="list-group-item list-group-item-action px-2 py-3" aria-current="true">
+                        <div class="d-flex w-100 justify-content-between">
+                            <span class="mx-2 text-break txt-title">${data["txt_title"]}</span>
+                            <span class="badge bg-warning date-badge">2020.04.10</span>
+                        </div>
                     </a>
                     `
                 document.getElementById("start-list").appendChild(div)

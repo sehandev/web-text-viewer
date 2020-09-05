@@ -26,34 +26,29 @@
 
     <body>
         <div class="container max-width-576 font-normal">
-            <div id="user-id" style="display: none">{{index . "userID"}}</div>
+            <!-- Recent History -->
+            <p class="ml-2 my-4">최근 기록</p>
 
-            <div id="start-list" class="list-group">
-                <a href="#" class="list-group-item list-group-item-action p-4">
+            <div id="recent-txt" class="list-group">
+                <a href="#" class="list-group-item list-group-item-action px-2 py-3" aria-current="true">
                     <div class="d-flex w-100 justify-content-between">
-                        <h5 class="mb-1">TXT file 이름</h5>
-                        <span class="upload-date">2020.04.10</span>
+                        <span class="mx-2 text-break txt-title">txt_title 텍스트 파일 제목</span>
+                        <span class="badge bg-warning date-badge">2020.04.10</span>
                     </div>
-                    <div class="recent-date text-secondary text-right">3 days ago</div>
-                </a>
-                <a href="#" class="list-group-item list-group-item-action">
-                    <div class="d-flex w-100 justify-content-between">
-                        <h5 class="mb-1">List group item heading</h5>
-                        <small class="text-muted">3 days ago</small>
-                    </div>
-                    <p class="mb-1">Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus varius blandit.</p>
-                    <small class="text-muted">Donec id elit non mi porta.</small>
-                </a>
-                <a href="#" class="list-group-item list-group-item-action">
-                    <div class="d-flex w-100 justify-content-between">
-                        <h5 class="mb-1">List group item heading</h5>
-                        <small class="text-muted">3 days ago</small>
-                    </div>
-                    <p class="mb-1">Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus varius blandit.</p>
-                    <small class="text-muted">Donec id elit non mi porta.</small>
                 </a>
             </div>
+
+            <!-- TXT List -->
+            <p class="ml-2 my-4">TXT List</p>
+
+            <div id="start-list" class="list-group"></div>
+
+            <!-- footer padding -->
+            <div class="m-4"></div>
         </div>
+
+        <!-- none-display information -->
+        <div id="user-id" style="display: none">{{index . "userID"}}</div>
 
         <!-- jquery -->
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>

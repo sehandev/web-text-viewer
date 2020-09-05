@@ -1,7 +1,8 @@
-.upload-date {
-    font-size: large;
+.txt-title {
+    font-size: 1rem;
 }
 
-.recent-date {
-    font-size: medium;
+.date-badge {
+    height: fit-content;
+    font-size: 1rem;
 }
