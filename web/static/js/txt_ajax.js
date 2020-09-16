@@ -42,7 +42,7 @@ function split_txt_content(txt_content) {
 
         // 몇 줄인지 확인
         document.getElementById("compute-width").innerText = content_line
-        line_count = document.getElementById("compute-width").offsetHeight / 40
+        line_count = document.getElementById("compute-width").offsetHeight / line_height
         if (line_count < 1) {
             line_count = 1
         }
